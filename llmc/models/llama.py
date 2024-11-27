@@ -13,7 +13,9 @@ class Llama(BaseModel):
 
     def find_embed_layers(self):
         self.embed_tokens = self.model.model.embed_tokens
-        self.rotary_emb = self.model.model.rotary_emb
+        print(self.config.model.type)
+        print(self.model.model)
+        # self.rotary_emb = self.model.model.rotary_emb
 
     def find_block_name(self):
         self.block_name_prefix = 'model.layers'
@@ -22,8 +24,8 @@ class Llama(BaseModel):
     def get_embed_layers(self):
         return [self.embed_tokens]
 
-    def get_attention_rotary_layers(self):
-        return [self.rotary_emb]
+    # def get_attention_rotary_layers(self):
+    #     return [self.rotary_emb]
 
     def get_head_layers(self):
         return [self.model.lm_head]
@@ -32,7 +34,9 @@ class Llama(BaseModel):
         return [self.model.model.norm]
 
     def get_layers_except_blocks(self):
-        return [self.embed_tokens, self.rotary_emb, self.model.model.norm, self.model.lm_head] # noqa
+        # return [self.embed_tokens, self.rotary_emb, self.model.model.norm, self.model.lm_head] # noqa
+        return [self.embed_tokens, self.model.model.norm, self.model.lm_head] # noqa
+
 
     def skip_layer_name(self):
         return ['lm_head']

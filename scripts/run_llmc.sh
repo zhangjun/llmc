@@ -2,14 +2,16 @@
 
 # export CUDA_VISIBLE_DEVICES=0,1
 
-llmc=/path/to/llmc
+llmc=/mnt/zhangjun/mydev/llmc
 export PYTHONPATH=$llmc:$PYTHONPATH
+# export CUDA_VISIBLE_DEVICES=1
+export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
 
-task_name=awq_w_only
-config=${llmc}/configs/quantization/methods/Awq/awq_w_only.yml
+task_name=awq_fp8
+config=${llmc}/awq_fp8.yaml
 
 nnodes=1
-nproc_per_node=1
+nproc_per_node=2
 
 
 find_unused_port() {

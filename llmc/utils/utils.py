@@ -64,10 +64,7 @@ def check_config(config):
 
 
 def mkdirs(path):
-    if not os.path.exists(path):
-        os.makedirs(path)
-    else:
-        raise Exception(f'{path} existed before. Need check.')
+    os.makedirs(path,  exist_ok=True)
 
 
 def copy_files(source_dir, target_dir, substring):

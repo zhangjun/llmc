@@ -1,0 +1,49 @@
+base:
+    seed: &seed 42
+model:
+    type: Llama
+    path: /mnt/shared/maas/ai_story/llama2_as_def_en_12b_mistral_sfw_1115
+    tokenizer_mode: slow
+    torch_dtype: auto
+calib:
+    name: c4
+    download: False
+    path: /mnt/zhangjun/mydev/llm/datasets/c4-calib/c4
+    n_samples: 128
+    bs: -1
+    seq_len: 2048
+    preproc: general
+    seed: *seed
+eval:
+    eval_pos: [fake_quant]
+    name: c4
+    download: False
+    path: /mnt/zhangjun/mydev/llm/datasets/c4-eval/c4
+    seq_len: 2048
+    # For 7B / 13B model eval, bs can be set to "1", and inference_per_block can be set to "False".
+    # For 70B model eval, bs can be set to "20", and inference_per_block can be set to "True".
+    bs: 1
+    inference_per_block: False
+quant:
+    method: Awq
+    quant_type: float-quant
+    weight:
+        # Support ["e4m3", "e5m2"]
+        bit: e4m3
+        symmetric: True
+        granularity: per_channel
+        use_qtorch: False
+    act:
+        # Support ["e4m3", "e5m2"]
+        bit: e4m3
+        symmetric: True
+        granularity: per_token
+        use_qtorch: False
+    special:
+        trans: True
+        trans_version: v2
+        weight_clip: True
+    quant_out: True
+save:
+    save_sgl: True
+    save_path: /mnt/zhangjun/mydev/fp8_deploy/llama2_as_def_en_12b_mistral_sfw_1115_fp8
